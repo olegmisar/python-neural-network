@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.special
+import json
 
 class NeuralNetwork:
     def __init__(self, input_nodes, hidden_nodes, output_nodes, learning_rate = 0.1):
@@ -49,3 +50,21 @@ class NeuralNetwork:
         self.weights_ih += hidden_deltas
         self.bias_o     += output_gradient
         self.bias_h     += hidden_gradient
+
+    def save(self, path):
+        data = {
+            'weights_ih': self.weights_ih.tolist(),
+            'weights_ho': self.weights_ho.tolist(),
+            'bias_h': self.bias_h.tolist(),
+            'bias_o': self.bias_o.tolist()
+        }
+        with open(path, 'w') as weights_file:
+            json.dump(data, weights_file, separators=(',', ':'))
+
+    def load(self, path):
+        with open(path, 'r') as weights_file:
+            data = json.load(weights_file)
+            self.weights_ih = np.array(data['weights_ih'])
+            self.weights_ho = np.array(data['weights_ho'])
+            self.bias_h = np.array(data['bias_h'])
+            self.bias_o = np.array(data['bias_o'])
