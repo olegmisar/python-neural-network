@@ -1,15 +1,18 @@
 from nn import NeuralNetwork
-
-nn = NeuralNetwork(784, 100, 10)
+import random
 
 def normalizeInputs(inputs):
     return [num / 255 for num in inputs]
 
-print('TRAIN')
+nn = NeuralNetwork(784, 100, 10)
+nn.load('weights60000.json')
+
 with open('mnist_train.csv') as train_file:
+    print('TRAIN')
     i = 0
     for str in train_file:
-        if i == 30000: break
+        if random.randint(1,2) == 2: continue
+        if i > 60000: break
         if i % 1000 == 0: print('train {}'.format(i))
         i += 1
 
@@ -18,8 +21,8 @@ with open('mnist_train.csv') as train_file:
         targets = [0.9 if i == data[0] else 0.1 for i in range(10)]
         nn.train(inputs, targets)
 
-print('TEST')
 with open('mnist_test.csv') as test_file:
+    print('TEST')
     total = 0
     errors = 0
     for str in test_file:
@@ -33,4 +36,13 @@ with open('mnist_test.csv') as test_file:
             errors += 1
         total += 1
 
-print(total, errors / total * 100)
+    print(total, '{0:.2f}%'.format(errors / total * 100))
+
+
+answer = input('Save weights (y/n)? ').lower()
+if answer == 'yes' or answer == 'y':
+    nn.save('weights60000.json')
+    print('Weights has been saved')
+else:
+    print('Wegihts has been dropped')
+
