@@ -6,7 +6,7 @@ def normalizeInputs(inputs):
     return [num / 255 for num in inputs]
 
 nn = NeuralNetwork(784, 100, 10)
-# nn.load('weights60000.json')
+nn.load('weights60000RELU.json')
 
 start = time.time()
 with open('mnist_train.csv') as train_file:
@@ -47,7 +47,7 @@ print('Time {} seconds'.format(end - start))
 
 answer = input('Save weights? (y/n) ').lower()
 if answer == 'yes' or answer == 'y':
-    nn.save('weights60000.json')
+    nn.save('weights60000RELU.json')
     print('Weights has been saved')
 else:
     print('Wegihts has been dropped')
