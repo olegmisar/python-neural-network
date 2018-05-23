@@ -1,18 +1,19 @@
 from nn import NeuralNetwork
 import random
+import time
 
 def normalizeInputs(inputs):
     return [num / 255 for num in inputs]
 
 nn = NeuralNetwork(784, 100, 10)
-nn.load('weights60000.json')
+# nn.load('weights60000.json')
 
+start = time.time()
 with open('mnist_train.csv') as train_file:
     print('TRAIN')
     i = 0
     for str in train_file:
-        if random.randint(1,2) == 2: continue
-        if i > 60000: break
+        # if i > 2000: break
         if i % 1000 == 0: print('train {}'.format(i))
         i += 1
 
@@ -36,10 +37,15 @@ with open('mnist_test.csv') as test_file:
             errors += 1
         total += 1
 
-    print(total, '{0:.2f}%'.format(errors / total * 100))
+    print('Tested: {0}\nErrors: {1:.2f}%'.format(total, errors / total * 100))
 
 
-answer = input('Save weights (y/n)? ').lower()
+end = time.time()
+print('Time {} seconds'.format(end - start))
+
+# print(nn.weights_ho)
+
+answer = input('Save weights? (y/n) ').lower()
 if answer == 'yes' or answer == 'y':
     nn.save('weights60000.json')
     print('Weights has been saved')
