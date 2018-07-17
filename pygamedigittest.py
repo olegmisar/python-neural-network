@@ -3,8 +3,8 @@ import math
 from nn import NeuralNetwork
 from PIL import Image
 
-nn = NeuralNetwork(784, 100, 10)
-nn.load('weights60000.json')
+nn = NeuralNetwork(784, 200, 10)
+nn.load('weights60000_100hidden.json')
 
 pygame.init()
 screen = pygame.display.set_mode((560, 560))
@@ -42,7 +42,7 @@ while True:
     if predict_digit:
         predict_digit = False
         screenshot = pygame.image.tostring(screen, 'RGB')
-        image = Image.frombytes('RGB', screen.get_size(), screenshot).convert('L').resize((28, 28), Image.LANCZOS)
+        image = Image.frombytes('RGB', screen.get_size(), screenshot).convert('L').resize((28, 28), Image.BICUBIC)
         output = nn.predict(image.getdata())
         result = output.index(max(output))
         print(result)

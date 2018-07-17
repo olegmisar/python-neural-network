@@ -14,10 +14,10 @@ class NeuralNetwork:
         self.bias_h = np.random.normal(0.0, pow(1, -0.5), (hidden_nodes, 1))
         self.bias_o = np.random.normal(0.0, pow(1, -0.5), (output_nodes, 1))
 
-        self.activation_function   = lambda x: x * (x > 0)
-        # lambda x: scipy.special.expit(x)
-        self.activation_function_d =  lambda x: 1 * (x >= 0)
-        # lambda x: self.activation_function(x) * (1 - self.activation_function(x))
+        self.activation_function   = lambda x: scipy.special.expit(x)
+        # lambda x: x * (x > 0)
+        self.activation_function_d =  lambda x: self.activation_function(x) * (1 - self.activation_function(x))
+        # lambda x: 1 * (x >= 0)
         self.sigmoid   = lambda x: scipy.special.expit(x)
         self.sigmoid_d = lambda y: y * (1 - y)
 
